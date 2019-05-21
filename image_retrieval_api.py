@@ -118,6 +118,7 @@ def read_embedding_from_disk(ci,embed_dir):
 
 
 def retrieve(embed_dir,
+             classes,
              query_classes = ['AJ_Cook','Aaron_Peirsol','Aaron_Sorkin'],
              nqueries_per_class = 4,
              n_retrieval = 4):
