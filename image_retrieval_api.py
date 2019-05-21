@@ -74,7 +74,7 @@ def write_all_embeddings_to_disk(model,
     classwise_numel = {}
     
     dummy = torch.ones(*((1,3) + imsize)).to(device)
-    dummy_embeds = net(dummy)
+    dummy_embeds = model(dummy)
     embed_len = dummy_embeds.shape[-1]
     del dummy_embeds
     with torch.no_grad():
@@ -90,7 +90,7 @@ def write_all_embeddings_to_disk(model,
             for bi_ in range(n_batches):
                 bxi = bx[bi_*batch_size : (bi_+1)*batch_size]
                 bxi = bxi.to(device)
-                embeds_bxi = net(bxi)
+                embeds_bxi = model(bxi)
                 embeds_bxi_ = tensor_to_numpy(embeds_bxi)
                 embeds_ci[bi_*batch_size : (bi_+1)*batch_size,:] = embeds_bxi_
                 del embeds_bxi,bxi
