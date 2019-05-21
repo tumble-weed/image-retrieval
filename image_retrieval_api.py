@@ -146,9 +146,9 @@ def retrieve(embed_dir,
         filenames_of_queries_for_c = filenames_i[query_idx_from_ci]
         filenames_of_queries.append(filenames_of_queries_for_c)
 
-        over_retrieved = {'idx':np.zeros((nqueries,lfw_sampler.n_classes,k)),
-                          'dist':np.full((nqueries,lfw_sampler.n_classes,k),np.inf),
-                          'names':np.zeros((nqueries,lfw_sampler.n_classes,k),dtype=object),} # we will retrieve k results from each class, 
+        over_retrieved = {'idx':np.zeros((nqueries,len(classes),k)),
+                          'dist':np.full((nqueries,len(classes),k),np.inf),
+                          'names':np.zeros((nqueries,len(classes),k),dtype=object),} # we will retrieve k results from each class, 
                                                                                               # then compare among these n_classes*k results to again find the top k
                                                                                               # thus we over-retrieve
 
