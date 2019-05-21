@@ -1,6 +1,6 @@
 import numpy as np
 import sklearn.datasets
-
+import os
 import itertools
 import sklearn.metrics.pairwise
 import pickle
