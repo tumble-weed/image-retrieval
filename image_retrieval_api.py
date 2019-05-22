@@ -65,12 +65,17 @@ def write_all_embeddings_to_disk(model,
                                  val_loader,
                                  imsize = (224,224),
                                  batch_size = 512,
-                                 embed_dir='embeddings'):
-    embed_dir = 'embeddings'
-    if os.path.exists(embed_dir):
-        shutil.rmtree(embed_dir)
-    os.makedirs(embed_dir)
-
+                                 embed_dir='embeddings',
+                                to_disk = False):
+    if to_disk:
+        embed_dir = 'embeddings'
+        if os.path.exists(embed_dir):
+            shutil.rmtree(embed_dir)
+        os.makedirs(embed_dir)
+        embed_info = embed_dir
+    else:
+        embed_info = {}
+        
     classwise_numel = {}
     
     dummy = torch.ones(*((1,3) + imsize)).to(device)
@@ -98,26 +103,38 @@ def write_all_embeddings_to_disk(model,
 
             filenames_ci = bf
     #         import pdb;pdb.set_trace()
-            embeds_ci_fname = str(ci)+'_embeds.pkl'
-            embeds_ci_fname = os.path.join(embed_dir,embeds_ci_fname)
+            if to_disk:
+            
+                embeds_ci_fname = str(ci)+'_embeds.pkl'
+                embeds_ci_fname = os.path.join(embed_dir,embeds_ci_fname)
 
-            with open(embeds_ci_fname,'wb') as f:
-                pickle.dump(embeds_ci,f)
-                pickle.dump(filenames_ci,f)
-    #         break
+                with open(embeds_ci_fname,'wb') as f:
+                    pickle.dump(embeds_ci,f)
+                    pickle.dump(filenames_ci,f)
+        #         break
+            else:
+                embed_info.update({ci:(embeds_ci,filenames_ci)})
+        return embed_info
         
         
     
-def read_embedding_from_disk(ci,embed_dir):
-    embeds_ci_fname = str(ci)+'_embeds.pkl'
-    embeds_ci_fname = os.path.join(embed_dir,embeds_ci_fname)
-    with open(embeds_ci_fname,'rb') as f:
-        embeds_ci = pickle.load(f)
-        filenames_ci = pickle.load(f)
+def read_embedding_from_disk(ci,embed_info):
+    if embed_info.__class__ == str:
+        embed_dir = embed_info
+        embeds_ci_fname = str(ci)+'_embeds.pkl'
+        embeds_ci_fname = os.path.join(embed_dir,embeds_ci_fname)
+        with open(embeds_ci_fname,'rb') as f:
+            embeds_ci = pickle.load(f)
+            filenames_ci = pickle.load(f)
+    elif embed_info.__class__ == dict:
+        embeds_ci,filenames_ci = embed_info[ci]
+         
+        pass
     return embeds_ci,filenames_ci
 
 
-def retrieve(embed_dir,
+
+def retrieve(embed_info,
              classes,
              query_classes = ['AJ_Cook','Aaron_Peirsol','Aaron_Sorkin'],
              nqueries_per_class = 4,
@@ -131,7 +148,7 @@ def retrieve(embed_dir,
     filenames_of_queries = []
     for c_same in query_classes:
         ci = classes.index(c_same)
-        embed_i, filenames_i = read_embedding_from_disk(c_same,embed_dir)
+        embed_i, filenames_i = read_embedding_from_disk(c_same,embed_info)
         filenames_i = np.array(filenames_i,dtype=object)
 
         nqueries = min(nqueries_per_class,len(filenames_i)) # the maximum number of queries will be lesses if our class doesnt have too many samples
@@ -166,7 +183,7 @@ def retrieve(embed_dir,
     #             print(c_same,c_other)
                 continue
             cj = classes.index(c_other)
-            embed_j,filenames_j = read_embedding_from_disk(c_other,embed_dir)
+            embed_j,filenames_j = read_embedding_from_disk(c_other,embed_info)
 
             filenames_j = np.array(filenames_j)
             '''
