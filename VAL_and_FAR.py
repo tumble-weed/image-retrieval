@@ -5,17 +5,17 @@ import sklearn.metrics.pairwise
 import numpy as np
 
 
-def VAL_and_FAR(embed_dir,
+def VAL_and_FAR(embed_info,
                 classes,
                d_range = np.linspace(0.,1.,5),
                ):
     
     classwise_pdist =collections.OrderedDict({}) #to store distances in a class,class pair manner
     for ci,c_same in enumerate(classes):
-        embed_i,filenames_i = read_embedding_from_disk(c_same,embed_dir) # read the embeddings of class i from file
+        embed_i,filenames_i = read_embedding_from_disk(c_same,embed_info) # read the embeddings of class i from file
         for cj in range(ci,n_classes):
             c_other = classes[cj]
-            embed_j,filenames_j = read_embedding_from_disk(c_other,embed_dir) 
+            embed_j,filenames_j = read_embedding_from_disk(c_other,embed_info) 
             D_ij = sklearn.metrics.pairwise.euclidean_distances(embed_i,
                                                          embed_j) # get all pairwise distances between samples of class i and samples of class j
             classwise_pdist[(ci,cj)] = D_ij 
