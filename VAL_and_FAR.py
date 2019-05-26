@@ -7,6 +7,7 @@ import numpy as np
 
 def VAL_and_FAR(embed_info,
                 classes,
+                classwise_numel,
                d_range = np.linspace(0.,1.,5),
                ):
     n_classes = len(classes)
