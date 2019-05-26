@@ -6,6 +6,7 @@ import numpy as np
 
 
 def VAL_and_FAR(embed_dir,
+                classes,
                d_range = np.linspace(0.,1.,5),
                ):
     
