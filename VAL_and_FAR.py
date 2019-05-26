@@ -9,7 +9,7 @@ def VAL_and_FAR(embed_info,
                 classes,
                d_range = np.linspace(0.,1.,5),
                ):
-    
+    n_classes = len(classes)
     classwise_pdist =collections.OrderedDict({}) #to store distances in a class,class pair manner
     for ci,c_same in enumerate(classes):
         embed_i,filenames_i = read_embedding_from_disk(c_same,embed_info) # read the embeddings of class i from file
