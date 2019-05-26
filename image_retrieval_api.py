@@ -114,7 +114,7 @@ def write_all_embeddings_to_disk(model,
         #         break
             else:
                 embed_info.update({ci:(embeds_ci,filenames_ci)})
-        return embed_info
+        return embed_info,classwise_numel
         
         
     
