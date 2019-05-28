@@ -17,7 +17,7 @@ from skimage import io
 from PIL import Image
 class Dataset(torch.utils.data.Dataset):
     def __init__(self,rootdir,filelist,transform):
-        super(LFWDataset,self).__init__()
+        super(Dataset,self).__init__()
         self.filelist = filelist
         self.rootdir = rootdir
         self.transform = transform
