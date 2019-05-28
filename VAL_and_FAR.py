@@ -1,6 +1,6 @@
 import collections
 import torch
-from image_retrieval_api import read_embedding_from_disk
+from .image_retrieval_api import read_embedding_from_disk
 import sklearn.metrics.pairwise
 import numpy as np
 
