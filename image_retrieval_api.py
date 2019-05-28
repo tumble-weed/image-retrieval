@@ -11,7 +11,7 @@ tensor_to_numpy = lambda t:t.detach().cpu().numpy()
 
 from skimage import io
 from PIL import Image
-class LFWDataset(torch.utils.data.Dataset):
+class Dataset(torch.utils.data.Dataset):
     def __init__(self,rootdir,filelist,transform):
         super(LFWDataset,self).__init__()
         self.filelist = filelist
@@ -35,7 +35,7 @@ class LFWDataset(torch.utils.data.Dataset):
         pass
 
     
-class LFWClassSampler(torch.utils.data.Sampler):
+class ClassSampler(torch.utils.data.Sampler):
     def __init__(self,
                  class_to_idx,
                  filelist,
