@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 tensor_to_numpy = lambda t:t.detach().cpu().numpy()
 
-from skimage import io
+import skimage.io
 from PIL import Image
 
 def get_dataset_folder_structure(train_folder,
@@ -52,7 +52,7 @@ class Dataset(torch.utils.data.Dataset):
         label = self.filelist[idx].split('/')[0]
 #         import pdb;pdb.set_trace()
 #         pdb.set_trace()
-        image = io.imread(fname)
+        image = skimage.io.imread(fname)
         pil_image = Image.fromarray(image)
         
         tensor_image = self.transform(pil_image)
