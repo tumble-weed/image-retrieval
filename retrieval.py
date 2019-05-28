@@ -17,6 +17,7 @@ from skimage import io
 from PIL import Image
 
 def get_dataset_folder_structure(train_folder,
+                                test_mode = False
                                 ):
     folder_structure = collections.OrderedDict({})
     classes = [d for d in sorted(os.listdir(train_folder)) if os.path.isdir(os.path.join(train_folder,d)) and d not in ['.','..']]
