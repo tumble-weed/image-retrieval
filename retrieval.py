@@ -8,9 +8,7 @@ import torch
 import torchvision
 import collections
 import sklearn.metrics.pairwise
-import skimage.io
-import skimage.util
-from matplotlib import pyplot as plt
+
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 tensor_to_numpy = lambda t:t.detach().cpu().numpy()
