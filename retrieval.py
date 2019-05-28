@@ -15,6 +15,29 @@ tensor_to_numpy = lambda t:t.detach().cpu().numpy()
 
 from skimage import io
 from PIL import Image
+
+def get_dataset_folder_structure(train_folder,
+                                ):
+    folder_structure = collections.OrderedDict({})
+    classes = [d for d in sorted(os.listdir(train_folder)) if os.path.isdir(os.path.join(train_folder,d)) and d not in ['.','..']]
+    if test_mode:
+    #     classes = [classes[c] for c in [2,5]]
+        classes = classes[:10]
+    print(len(classes))
+    folder_structure = collections.OrderedDict({c:[f for f in os.listdir(os.path.join(train_folder,c)) if not os.path.isdir(f)] for c in classes})
+    if False:print(folder_structure)
+
+    class_to_idx = {k:[] for k in folder_structure.keys()}
+    filelist = []
+    i = 0
+    for ( c ,fls) in folder_structure.items():
+
+        for fi in fls:
+            filelist.append('/'.join([c,fi]))
+            class_to_idx[c].append(i)
+            i+=1
+    return classes,class_to_idx, filelist
+
 class Dataset(torch.utils.data.Dataset):
     def __init__(self,rootdir,filelist,transform):
         super(Dataset,self).__init__()
